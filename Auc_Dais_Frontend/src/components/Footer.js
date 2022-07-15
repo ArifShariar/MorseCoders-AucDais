@@ -9,7 +9,7 @@ class Footer extends React.Component {
         let githubLink = "https://github.com/ArifShariar/";
         let gitHubIcon = "https://img.icons8.com/bubbles/50/000000/github.png";
         return (
-            <Navbar bg="dark" variant="dark">
+            <Navbar fixed="bottom" bg="dark" variant="dark">
                 <Container fluid={true}>
 
                     <Col lg={12} className="text-center text-muted">
