@@ -1,9 +1,43 @@
 import React from "react";
 import {Card, ListGroup} from "react-bootstrap";
+import axios from "axios";
+
 class AddAuctionConfirm extends React.Component{
     continue = e => {
         e.preventDefault();
         // api call here
+        // use axios to post to server
+        let ownerId = 1;
+        const {values : {product_name, product_description, minimum_price, start_date, start_time, end_date, end_time,
+            address, photos, tags}} = this.props;
+        let auction_start_date = start_date + " " + start_time;
+        let auction_end_date = end_date + " " + end_time;
+        let url = "http://localhost:8080/auction_products/create" ;
+
+        axios.post(url,
+            {},
+            {
+                params:{
+                    ownerId: ownerId,
+                    product_name: product_name,
+                    product_description: product_description,
+                    minimum_price: minimum_price,
+                    auction_start_date: auction_start_date,
+                    auction_end_date: auction_end_date,
+                    photos: photos,
+                    tags: tags,
+                    address: address
+
+                }
+            })
+            .then(response => {
+                console.log(response)
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
+
+
         this.props.nextStep();
     }
     back = e => {

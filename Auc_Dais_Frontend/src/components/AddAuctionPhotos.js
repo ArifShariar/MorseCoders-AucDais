@@ -29,7 +29,7 @@ class AddAuctionPhotos extends React.Component{
                         <div className="form-group">
                             <label htmlFor="photos">Auction Product Photos*</label>
                             <input type="file" className="form-control" id="photos" accept="image/png, image/gif, image/jpeg"
-                                   aria-describedby="photos" placeholder="Photos"
+                                   aria-describedby="photos" placeholder="Photos" name="photos"
                                    onChange={handleChange('photos')} defaultValue={values.photos} required={true} multiple={true}/>
                         </div>
 

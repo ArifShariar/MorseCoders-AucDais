@@ -31,22 +31,22 @@ class AddAuctionDateTime extends React.Component{
                         <div className="form-group">
                             <label htmlFor="start_date">Auction Start Date*</label>
                             <input type="date" className="form-control" id="start_date" aria-describedby="start_date" placeholder="Start Date"
-                                   onChange={handleChange('start_date')} defaultValue={values.start_date} required={true}/>
+                                   name="start_date" onChange={handleChange('start_date')} defaultValue={values.start_date} required={true}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="start_time">Auction Start Time*</label>
                             <input type="time" className="form-control" id="start_time" aria-describedby="start_time" placeholder="Start Time"
-                                      onChange={handleChange('start_time')} defaultValue={values.start_time} required={true}/>
+                                      name="start_time" onChange={handleChange('start_time')} defaultValue={values.start_time} required={true}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="end_date">Auction End Date*</label>
                             <input type="date" className="form-control" id="end_date" aria-describedby="end_date" placeholder="End Date"
-                                      onChange={handleChange('end_date')} defaultValue={values.end_date} required={true}/>
+                                      name="end_date" onChange={handleChange('end_date')} defaultValue={values.end_date} required={true}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="end_time">Auction End Time*</label>
                             <input type="time" className="form-control" id="end_time" aria-describedby="end_time" placeholder="End Time"
-                                        onChange={handleChange('end_time')} defaultValue={values.end_time} required={true}/>
+                                        name="end_time" onChange={handleChange('end_time')} defaultValue={values.end_time} required={true}/>
                         </div>
 
 

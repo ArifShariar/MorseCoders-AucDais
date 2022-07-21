@@ -1,0 +1,25 @@
+.container{
+    align-self: left;
+}
+.footer-container{
+    background-color: #FF9F45;
+    padding: 4rem 0 2rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;  
+    width: '100%';
+}
+.footer-subscription{
+    padding-left: 100px;
+    padding-right: 10px;
+    padding-top: 10px;
+    flex-direction: column; 
+    align-self: left;  
+}
+.footer-subscription-heading{
+    color:white;
+}
+.footer-link-item{
+    color: white;
+}

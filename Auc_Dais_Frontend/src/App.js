@@ -1,56 +1,38 @@
 import './App.css';
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import NavBar from "./components/NavBar";
-import Container from "react-bootstrap/Container";
-import {Col, Row} from "react-bootstrap";
-import Carousels from "./components/Carousel";
-import Footer from "./components/Footer";
 import LogInPage from "./components/LogIn";
 import SignUp from "./components/SignUp";
 import History from "./components/History";
 import LiveAuctions from "./components/LiveAuctions";
 import SavedAuctions from "./components/SavedAuctions";
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
+import Location from './components/Location';
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import AddAuction from "./components/AddAuction";
+import Home from './components/pages/Home';
+import ShowAuctionDetails from './components/pages/ShowAuctionDetails';
 
 function App() {
-    const marginTop = {
-        marginTop: "10px"
-    };
-
 
   return (
     <Router>
-        <NavBar />
-        <Container>
-            <Row>
-                <Col lg={12} style={marginTop}>
-                    <Routes>
-                        <Route path="/" element={<Carousels />} />
-                        <Route path="/login" element={<LogInPage/>}/>
-                        <Route path="/signup" element={<SignUp/>}/>
-                        <Route path="/history" element={<History/>}/>
-                        <Route path="/liveAuctions" element={<LiveAuctions/>}/>
-                        <Route path="/savedAuctions" element={<SavedAuctions/>}/>
-                        <Route path="/addAuction" element={<AddAuction/>}/>
-                    </Routes>
-                </Col>
-
-            </Row>
-        </Container>
-
-        <div>
-            <Container>
-                <Row>
-                    <Col lg={12} style={marginTop}>
-                        <Footer />
-                    </Col>
-                </Row>
-            </Container>
+        <div className='navbar-container fixed-top'>
+            <NavBar/>
         </div>
-
-
-
+         
+        <Routes>  
+            <Route path="/login" element={<LogInPage/>}/>
+            <Route path="/signup" element={<SignUp/>}/>
+            <Route path="/history" element={<History/>}/>
+            <Route path="/location" element={<Location/>}/>
+            <Route path="/liveAuctions" element={<LiveAuctions/>}/>
+            <Route path="/savedAuctions" element={<SavedAuctions/>}/>
+            <Route path="/addAuction" element={<AddAuction/>}/> 
+            <Route path="/auctionTitleWithId" element={<ShowAuctionDetails />} />          
+            <Route path="/" element={<Home />} />
+        </Routes>
     </Router>
   );
 }

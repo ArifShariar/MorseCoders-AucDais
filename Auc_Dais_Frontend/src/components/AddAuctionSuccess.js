@@ -1,15 +1,9 @@
 import React from "react";
-import {Card, ListGroup} from "react-bootstrap";
+import {Card} from "react-bootstrap";
 import {Link} from "react-router-dom";
-class AddAuctionSuccess extends React.Component{
-    continue = e => {
-       // go to homepage
 
-    }
+class AddAuctionSuccess extends React.Component{
     render() {
-        const marginTop = {
-            marginTop: "10px"
-        }
         return (
             <Card className={"border border-dark bg-dark text-white"}>
                 <Card.Header className={"bg-dark text-white text-center"}>Success</Card.Header>

@@ -1,32 +1,32 @@
 import React from 'react';
-import {Col, Navbar} from "react-bootstrap";
-import Container from "react-bootstrap/Container";
+import './Footer.css';
 
-class Footer extends React.Component {
-
-    render() {
-        let currentYear = new Date().getFullYear();
-        let githubLink = "https://github.com/ArifShariar/";
-        let gitHubIcon = "https://img.icons8.com/bubbles/50/000000/github.png";
-        return (
-            <Navbar fixed="bottom" bg="dark" variant="dark">
-                <Container fluid={true}>
-
-                    <Col lg={12} className="text-center text-muted">
-                        <div>All rights reserved by MorseCoders © {currentYear}</div>
-                        </Col>
-
-                </Container>
-                <Container fluid={true}>
-                        <Col lg={12} className="text-center text-muted">
-                            <div>
+function Footer (){
+    let currentYear = new Date().getFullYear();
+    let githubLink = "https://github.com/ArifShariar/";
+    let gitHubIcon = "https://img.icons8.com/bubbles/50/000000/github.png";
+    return( 
+        <div> 
+            <div className="footer-container">
+                <section className='footer-subscription'>
+                    <p className="footer-subscription-heading">
+                        All rights reserved by MorseCoders © {currentYear}
+                    </p>                
+                    <div className="footer-links">
+                    <div className="footer-link-wrapper">
+                        <div className="footer-link-item">
+                            <h4>About Us</h4>
+                            <p className="footer-subscription-link">
                                 Find us on<a href={githubLink} target="_blank" rel="noopener noreferrer"><img src={gitHubIcon} alt={"GitHub"}/></a>
-                            </div>
-                        </Col>
-                </Container>
-            </Navbar>
-        );
-    }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                </section>
+            </div>
+            
+        </div>
+    );
 }
 
 export default Footer;
