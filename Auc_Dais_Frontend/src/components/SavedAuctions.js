@@ -58,10 +58,10 @@ class SavedAuctions extends React.Component{
                                                         <td>{auction.auctionProduct.auction_start_date}</td>
                                                         <td>{auction.auctionProduct.auction_end_date}</td>
                                                         <td>
-                                                            <Button variant="outline-danger" size="sm">Delete</Button>
+                                                            <Button variant="outline-danger" size="sm" className={"text-center"}>Delete</Button>
                                                         </td>
                                                         <td>
-                                                            <Button variant="outline-success" size="sm">View</Button>
+                                                            <Button variant="outline-success" size="sm" className={"text-center"}>View</Button>
                                                         </td>
                                                     </tr>
                                                 )

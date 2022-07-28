@@ -2,6 +2,8 @@ import React from "react";
 import {Card, Form} from "react-bootstrap";
 import './Card.css'
 import axios from "axios";
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class SignUp extends React.Component{
 
@@ -36,11 +38,11 @@ class SignUp extends React.Component{
         }
 
         if (this.state.password !== this.state.confirmpass) {
-            alert("Passwords do not match");
+            this.notify();
             return;
         }
 
-        axios.post('http://localhost:8080/users/create', user).then(
+        axios.post('http://localhost:8080/users/signup', user).then(
             response => {
                 if(response.data != null) {
                     this.setState(this.initialstate);
@@ -60,6 +62,21 @@ class SignUp extends React.Component{
         this.setState({
             [event.target.name]: event.target.value
         });
+    }
+
+    
+    notify = () => {
+        toast.error("Passwords do not match",
+            {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+            },
+        );
     }
 
 
@@ -123,6 +140,7 @@ class SignUp extends React.Component{
                         </div>
                     </div>
                 </div>
+                <ToastContainer/>
             </div>
         );
     }

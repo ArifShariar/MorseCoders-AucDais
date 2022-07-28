@@ -1,75 +1,93 @@
-import React from "react";
-import {Card} from "react-bootstrap";
+import React, { useState } from "react";
+import {Card, Form} from "react-bootstrap";
 import axios from "axios";
-class LogInPage extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = this.initialState;
-        this.submitForm = this.submitForm.bind(this);
-    }
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {useNavigate} from "react-router-dom"
 
-    initialState = {
-        email: '',
-        password: ''
-    }
+function LogInPage() {
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-    submitForm = event => {
+    const submitForm = (event) => {
         event.preventDefault();
-        const user = {
-            email: this.state.email,
-            password: this.state.password
-        }
-
-        axios.post('http://localhost:8080/users/login', user).then(
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        axios.post('http://localhost:8080/users/login', {email: email, password: password}).then(
             response => {
                 if(response.data != null) {
-                    this.setState(this.initialState);
-                    alert("User Creation Successful");
+                    if(response.status === 200) {
+                        //this.setState(this.initialState);
+                        setEmail('');
+                        setPassword('');
+                        navigate("/?id=" + response.data.id, {
+                            state: { 
+                                    id: response.data.id,
+                                }
+                            }
+                        );
+                    }
                 }
             }
         ).catch(error => {
         console.log(error.response)
             // check if the error code is 5**
             if (error.response.status >= 500) {
-                alert("Server Error: Failed to create user, please try with different credentials");
+                alert("Server Error: Failed to login, please try with different credentials");
             }
-    });
+            else if (error.response.status === 400) {
+                notify();
+            }
+        });
     }
-    render() {
-        return (
-            <div className="card-container">
-                <div className='container-fluid' >
-                    <div className="row">
-                        <div className=" col-sm-12">
-                        <Card className=" bg-warning.bg-gradient">
-                            <Card.Header className={"bg-warning text-white text-center"}> Log In</Card.Header> 
-                                <Card.Body>
-                                    <div> 
-                                        <form>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInputEmail1">Email address</label>
-                                                <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInputPassword1">Password</label>
-                                                <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
-                                            </div>
-                                            <div className="form-group d-grid gap-2 col-6 mx-auto text-container">
-                                                <button type="submit" className="btn btn-secondary">Submit</button>
-                                            </div>
 
-                                        </form>
+    const notify = () => {
+        toast.error('Wrong email or password',
+            {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+            },
+        );
+    }
+
+    return (
+        <div className="card-container">
+            <div className='container-fluid' >
+                <div className="row">
+                    <div className=" col-sm-12">
+                    <Card className=" bg-warning.bg-gradient">
+                        <Card.Header className={"bg-warning text-white text-center"}> Log In</Card.Header> 
+                            <Card.Body>
+                                <Form id="signupform" onSubmit={submitForm}>
+                                    <Form.Group className="mb-3" controlId="inputEmail">
+                                        <Form.Label>Email</Form.Label>
+                                        <Form.Control required id="email" type="email" name="email" placeholder="Email" onChange={(e)=>setEmail(e.target.value)} />
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="inputPassword">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control required id="password" type="password" name="password" placeholder="Password" onChange={(e)=>setPassword(e.target.value)}/>
+                                    </Form.Group>
+
+                                    <div className="form-group d-grid gap-2 col-6 mx-auto text-container">
+                                        <button type="submit" className="btn btn-secondary">Submit</button>
                                     </div>
+                                </Form>
 
-                                </Card.Body>
-                            </Card>
-                        </div>
+                            </Card.Body>
+                        </Card>
                     </div>
                 </div>
             </div>
-            
-        );
-    }
+            <ToastContainer/>
+        </div>
+    )
 }
 
 export default LogInPage;
