@@ -1,7 +1,11 @@
 package com.morse_coders.aucdaisbackend.Users;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -61,14 +65,19 @@ public class UsersService {
         }
     }
 
-    public Users login(String email, String password) {
+    public HttpEntity<Users> login(Users user) {
+        String email = user.getEmail();
+        String password = user.getPassword();
+        
         Optional<Users> userOptional = usersRepository.findUsersByEmail(email);
         if (userOptional.isPresent()) {
-            Users user = userOptional.get();
+            user = userOptional.get();
             if (checkPassword(password, user.getPassword())) {
-                return user;
+                return new ResponseEntity<Users>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Users>(user, HttpStatus.BAD_REQUEST);
             }
         }
-        return null;
+        return new ResponseEntity<Users>(user, HttpStatus.BAD_REQUEST);
     }
 }
