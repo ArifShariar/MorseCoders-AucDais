@@ -1,72 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
 import {Card, Form} from "react-bootstrap";
-import './Card.css'
+import './Card.css';
 import axios from "axios";
-import {ToastContainer, toast} from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from "./context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
-class SignUp extends React.Component{
+function SignUp() {
 
-    constructor(props) {
-        super(props);
-        this.state = this.initialstate;
-        this.userChange = this.userChange.bind(this);
-        this.submitUser = this.submitUser.bind(this);
-    }
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [address, setAddress] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmpass, setConPassword] = useState('');
+    const [dateOfBirth, setDob] = useState('');
+    const [user, setUser] = useState();
+    const useauth = useAuth();
+    const navigate = useNavigate();
 
-    initialstate = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phoneNumber: '',
-        address: '',
-        password: '',
-        confirmpass: '',
-        dateOfBirth: ''
-    };
-
-    submitUser = event => {
+    const submitUser = event => {
         event.preventDefault();
-        const user = {
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            email: this.state.email,
-            phoneNumber: this.state.phoneNumber, 
-            address: this.state.address,
-            password: this.state.password,
-            dateOfBirth: this.state.dateOfBirth
+
+        var fname = document.getElementById("fname").value;
+        var lname = document.getElementById("lname").value;
+        var mail = document.getElementById("mail").value;
+        var phone = document.getElementById("phone").value;
+        var addr = document.getElementById("addr").value;
+        var pwd = document.getElementById("pwd").value;
+        var cpwd = document.getElementById("cpwd").value;
+        var dob = document.getElementById("dob").value;
+
+        const newUser = {
+            firstName: fname,
+            lastName: lname,
+            email: mail,
+            phoneNumber: phone, 
+            address: addr,
+            password: pwd,
+            dateOfBirth: dob
         }
 
-        if (this.state.password !== this.state.confirmpass) {
-            this.notify();
+        if (pwd !== cpwd) {
+            notify("Passwords do not match");
             return;
         }
 
-        axios.post('http://localhost:8080/users/signup', user).then(
+        axios.post('http://localhost:8080/users/signup', newUser).then(
             response => {
                 if(response.data != null) {
-                    this.setState(this.initialstate);
-                    alert("User Creation Successful");
+                    if(response.status == 200) {
+                        setFirstName('');
+                        setLastName('');
+                        setEmail('');
+                        setAddress('');
+                        setPhoneNumber('');
+                        setPassword('');
+                        setConPassword('');
+                        setDob('');
+                        // useauth.login(response.data.token);
+                        
+                        navigate('/login', {
+                                state: {
+                                    created: true,
+                                    name: fname
+                                },
+                                replace: true
+                            }
+                        );
+                    }
                 }
             }
         ).catch(error => {
-	    console.log(error.response)
             // check if the error code is 5**
             if (error.response.status >= 500) {
                 alert("Server Error: Failed to create user, please try with different credentials");
             }
-	});
-    }
-
-    userChange = event => {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
+            else if (error.response.status == 400) {
+                notify("Email already taken");
+            }
+	    });
     }
 
     
-    notify = () => {
-        toast.error("Passwords do not match",
+    const notify = (msg) => {
+        toast.error(msg,
             {
                 position: "top-center",
                 autoClose: 5000,
@@ -79,71 +99,84 @@ class SignUp extends React.Component{
         );
     }
 
+    const setcurrentUser = (event) => {
+        setEmail(event.target.value);
+        setUser(event.target.value);
+    }
 
-    render(){
-        return(
-            <div className="card-container">
-                <div className='container-fluid' >
-                    <div className="row">
-                        <div className=" col-sm-12">
-                        <Card className=" bg-warning.bg-gradient">
-                            <Card.Header className={"bg-warning text-white text-center"}> Sign Up</Card.Header>
-                             <Card.Body>
-                                    <Form id="signupform" onSubmit={this.submitUser}>
-                                        <Form.Group className="mb-3" controlId="inputFirstName">
-                                            <Form.Label>First Name</Form.Label>
-                                            <Form.Control required value={this.state.firstName} onChange={this.userChange} type="text" name="firstName" placeholder="First Name" />
-                                        </Form.Group>
+    return(
+        <div className="card-container">
+            <div className='container-fluid' >
+                <div className="row">
+                    <div className="col">
+                    <Card className=" bg-warning.bg-gradient">
+                        <Card.Header className={"bg-warning text-white text-center"}> Sign Up</Card.Header>
+                            <Card.Body>
+                            <div className="row">
+                            <div className="col">
+                                <Form id="signupform" onSubmit={submitUser}>
+                                    <Form.Group className="mb-3" controlId="inputFirstName">
+                                        <Form.Label>First Name</Form.Label>
+                                        <Form.Control required onChange={(e)=>setFirstName(e.target.value)} type="text" name="firstName" placeholder="First Name" id="fname"/>
+                                    </Form.Group>
 
-                                        <Form.Group className="mb-3" controlId="inputLastName">
-                                            <Form.Label>Last Name</Form.Label>
-                                            <Form.Control required value={this.state.lastName} onChange={this.userChange} type="text" name="lastName" placeholder="Last Name" />
-                                        </Form.Group>
+                                    <Form.Group className="mb-3" controlId="inputLastName">
+                                        <Form.Label>Last Name</Form.Label>
+                                        <Form.Control required onChange={(e)=>setLastName(e.target.value)} type="text" name="lastName" placeholder="Last Name" id="lname"/>
+                                    </Form.Group>
 
-                                        <Form.Group className="mb-3" controlId="inputEmail">
-                                            <Form.Label>Email address</Form.Label>
-                                            <Form.Control required value={this.state.email} onChange={this.userChange} type="email" name="email" placeholder="Enter email" />
-                                        </Form.Group>
+                                    <Form.Group className="mb-3" controlId="inputEmail">
+                                        <Form.Label>Email address</Form.Label>
+                                        <Form.Control required onChange={setcurrentUser} type="email" name="email" placeholder="Enter email" id="mail"/>
+                                    </Form.Group>
 
-                                        <Form.Group className="mb-3" controlId="inputPhone">
-                                            <Form.Label>Phone Number</Form.Label>
-                                            <Form.Control required value={this.state.phoneNumber} onChange={this.userChange} type="text" name="phoneNumber" placeholder="Enter Phone" />
-                                        </Form.Group>
+                                    <Form.Group className="mb-3" controlId="inputPhone">
+                                        <Form.Label>Phone Number</Form.Label>
+                                        <Form.Control required onChange={(e)=>setPhoneNumber(e.target.value)} type="text" name="phoneNumber" placeholder="Enter Phone" id="phone"/>
+                                    </Form.Group>
 
-                                        <Form.Group className="mb-3" controlId="inputAddress">
-                                            <Form.Label>Address</Form.Label>
-                                            <Form.Control required value={this.state.address} onChange={this.userChange} type="text" name="address" placeholder="Enter Address" />
-                                        </Form.Group>
+                                    <Form.Group className="mb-3" controlId="inputAddress">
+                                        <Form.Label>Address</Form.Label>
+                                        <Form.Control required onChange={(e)=>setAddress(e.target.value)} type="text" name="address" placeholder="Enter Address" id="addr"/>
+                                    </Form.Group>
 
-                                        <Form.Group className="mb-3" controlId="inputPassword">
-                                            <Form.Label>Password</Form.Label>
-                                            <Form.Control required value={this.state.password} onChange={this.userChange} type="password" name="password" placeholder="Password" />
-                                        </Form.Group>
+                                    <Form.Group className="mb-3" controlId="inputPassword">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control required onChange={(e)=>setPassword(e.target.value)} type="password" name="password" placeholder="Password" id="pwd"/>
+                                    </Form.Group>
 
-                                        <Form.Group className="mb-3" controlId="confirmPassword">
-                                            <Form.Label>Confirm Password</Form.Label>
-                                            <Form.Control required value={this.state.confirmpass} onChange={this.userChange} type="password" name="confirmpass" placeholder="Confirm Password" />
-                                        </Form.Group>
+                                    <Form.Group className="mb-3" controlId="confirmPassword">
+                                        <Form.Label>Confirm Password</Form.Label>
+                                        <Form.Control required onChange={(e)=>setConPassword(e.target.value)} type="password" name="confirmpass" placeholder="Confirm Password" id="cpwd"/>
+                                    </Form.Group>
 
-                                        <Form.Group className="mb-3" controlId="inputDOB">
-                                            <Form.Label>Date of Birth</Form.Label>
-                                            <Form.Control required value={this.state.dateOfBirth} onChange={this.userChange} type="date" name="dateOfBirth" placeholder="Enter Date of Birth" />
-                                        </Form.Group>
+                                    <Form.Group className="mb-3" controlId="inputDOB">
+                                        <Form.Label>Date of Birth</Form.Label>
+                                        <Form.Control required onChange={(e)=>setDob(e.target.value)} type="date" name="dateOfBirth" placeholder="Enter Date of Birth" id="dob"/>
+                                    </Form.Group>
 
-                                        <div className="form-group d-grid gap-2 col-6 mx-auto text-container">
-                                            <button type="submit" className="btn btn-secondary">Submit</button>
+                                    <div className="form-group d-grid gap-2 col-6 mx-auto text-container">
+                                        <button type="submit" className="btn btn-secondary">Submit</button>
+                                    </div>
+                                </Form>
+                                </div>
+                                        <div className="image-container col">
+                                            <img
+                                                src={require("../images/online-auctions.jpg")}
+                                                alt="online-auctions photo"
+                                                height={'100%'}
+                                                width={'100%'}
+                                            /> 
                                         </div>
-                                    </Form>
-
-                                </Card.Body>
-                            </Card> 
-                        </div>
+                                    </div>
+                            </Card.Body>
+                        </Card> 
                     </div>
                 </div>
-                <ToastContainer/>
             </div>
-        );
-    }
+            <ToastContainer/>
+        </div>
+    );
 }
 
 export default SignUp;

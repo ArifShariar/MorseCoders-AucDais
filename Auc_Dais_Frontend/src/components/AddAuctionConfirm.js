@@ -51,32 +51,40 @@ class AddAuctionConfirm extends React.Component{
         const {values : {product_name, product_description, minimum_price, start_date, start_time, end_date, end_time,
         auction_type, address, photos, tags}} = this.props;
         return (
-            <Card className={"border border-dark bg-dark text-white"}>
-                <Card.Header className={"bg-dark text-white text-center"}>Confirm Auction Information</Card.Header>
-                <Card.Body>
-                    <ListGroup>
-                        <ListGroup.Item>Product Name: {product_name}</ListGroup.Item>
-                        <ListGroup.Item>Product Description: {product_description}</ListGroup.Item>
-                        <ListGroup.Item>Minimum Bid: {minimum_price}</ListGroup.Item>
-                        <ListGroup.Item>Start Date: {start_date}</ListGroup.Item>
-                        <ListGroup.Item>Start Time: {start_time}</ListGroup.Item>
-                        <ListGroup.Item>End Date: {end_date}</ListGroup.Item>
-                        <ListGroup.Item>End Time: {end_time}</ListGroup.Item>
-                        <ListGroup.Item>Auction Type: {auction_type}</ListGroup.Item>
-                        <ListGroup.Item>Address: {address}</ListGroup.Item>
-                        <ListGroup.Item>Photos: {photos}</ListGroup.Item>
-                        <ListGroup.Item>Tags: {tags}</ListGroup.Item>
+            <div className="card-container">
+                <div className='container-fluid' >
+                    <div className="row">
+                        <div className=" col-sm-12">
+                        <Card className=" bg-warning.bg-gradient">
+                            <Card.Header className={"bg-warning text-white text-center"}> Confirm information </Card.Header>
+                                <Card.Body>
+                                    <ListGroup>
+                                        <ListGroup.Item>Product Name: {product_name}</ListGroup.Item>
+                                        <ListGroup.Item>Product Description: {product_description}</ListGroup.Item>
+                                        <ListGroup.Item>Minimum Bid: {minimum_price}</ListGroup.Item>
+                                        <ListGroup.Item>Start Date: {start_date}</ListGroup.Item>
+                                        <ListGroup.Item>Start Time: {start_time}</ListGroup.Item>
+                                        <ListGroup.Item>End Date: {end_date}</ListGroup.Item>
+                                        <ListGroup.Item>End Time: {end_time}</ListGroup.Item>
+                                        <ListGroup.Item>Auction Type: {auction_type}</ListGroup.Item>
+                                        <ListGroup.Item>Address: {address}</ListGroup.Item>
+                                        <ListGroup.Item>Photos: {photos}</ListGroup.Item>
+                                        <ListGroup.Item>Tags: {tags}</ListGroup.Item>
 
-                    </ListGroup>
-                    <div className="form-group text-center" style={marginTop}>
-                        <button type="submit" className="btn btn-primary" onClick={this.continue}>Confirm</button>
-                    </div>
-                    <div className="form-group text-center" style={marginTop}>
-                        <button type="submit" className="btn btn-danger" onClick={this.back}>Back</button>
-                    </div>
+                                    </ListGroup>
+                                    <div className="d-grid gap-2 col-6 mx-auto text-container" style={marginTop}>
+                                        <button type="submit" className="btn btn-primary" onClick={this.continue}>Confirm</button>
+                                    </div>
+                                    <div className="d-grid gap-2 col-6 mx-auto text-container" style={marginTop}>
+                                        <button type="submit" className="btn btn-danger" onClick={this.back}>Back</button>
+                                    </div>
 
-                </Card.Body>
-            </Card>
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    </div>
+                </div>
+            </div>
         );
     }
 }

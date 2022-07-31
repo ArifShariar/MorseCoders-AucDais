@@ -1,6 +1,7 @@
 import React from "react";
 import {Card} from "react-bootstrap";
 import './Card.css'
+import {toast} from "react-toastify";
 class AddAuctionDetails extends React.Component{
     continue = e => {
         // check if all required fields are filled
@@ -11,16 +12,28 @@ class AddAuctionDetails extends React.Component{
         }
         else {
             e.preventDefault();
-            alert("Please fill in all required fields");
+            this.notify();
         }
 
+    }
+
+    notify = () => {
+        toast.error("Please fill in all required fields", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+        },);
     }
     render() {
         const {values, handleChange} = this.props;
         return (
             <div className="card-container">
             <Card className=" bg-warning.bg-gradient">
-                <Card.Header className={" bg-warning text-dark text-center"}>Add Auction Details</Card.Header>
+                <Card.Header className={" bg-warning text-white text-center"}>Add Auction Details</Card.Header>
                 <Card.Body className="card-body-container">
                     <form>
                         <div className="form-group">

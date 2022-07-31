@@ -5,6 +5,7 @@
     padding-right: 100px;
     padding-bottom: 20px;
     flex-direction: column;
+    align-self: left;
 }
 .card-body-container{
     justify-content: flex-end;
@@ -23,11 +24,21 @@
     width:"200" ;
     height:"250";
 }
+.image-container{
+    display: flex;
+    flex-direction: row;
+    width:"200" ;
+    height:"250";
+    overflow: hidden;
+}
 .card-header{
     background-color: #FF9F45;
 }
 .row{
     padding-bottom: 20px;
+}
+.col-element{
+    padding-top: 100px;
 }
 .Row{ 
     padding-top: 10px;
@@ -45,4 +56,4 @@
 .text-container{
     padding-top: 10px;
     flex-direction: row; 
-}
+} 

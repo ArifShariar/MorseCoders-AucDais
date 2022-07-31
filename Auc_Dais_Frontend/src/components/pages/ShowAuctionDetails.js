@@ -49,7 +49,7 @@ class ShowAuctionDetails extends React.Component{
     componentDidMount() {
         // get data from axios get request
         // save the data in auction
-        axios.get("http://localhost:8080/auction_products/auction/2")
+        axios.get("http://localhost:8080/auction_products/auction/12")
             .then(response =>response.data)
             .then((data)=>{
                 this.setState({auction: data});
