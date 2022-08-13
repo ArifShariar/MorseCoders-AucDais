@@ -9,7 +9,7 @@ function Carousels () {
     const navigate = useNavigate();
 
     const navigateToDetails = () => {
-      navigate('/auctionTitleWithId');
+      navigate('/auction/12');
     };
         return (
             <div className="card-container">

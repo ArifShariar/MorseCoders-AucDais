@@ -1,21 +1,17 @@
-import React from 'react'
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import React from 'react';
+import { NavDropdown, Navbar, Nav, Form, Button, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { useAuth } from './context/AuthProvider';
-import { RequireAuth } from './RequireAuth';
-
+import "./SideBar.css"
+import "./DropDownMenu.css"
 
 function NavBar() {
     const navigate = useNavigate();
     const useauth = useAuth();
     let searchResult = [];
-    console.log('in navbar'+useAuth);
+    //console.log('in navbar'+useAuth);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -39,40 +35,46 @@ function NavBar() {
         window.location.replace("http://localhost:3000");
     }
 
+    const paddingLeft = {
+        paddingLeft: "10px"
+    }
+
     return (
         <Navbar collapseOnSelect expand="lg" sticky="top">
-            <Container fluid>
+                <img
+                    src={require("../images/auction-logo.webp")}
+                    width="100"
+                    height="40"
+                    className="d-inline-block align-top left-padding-for-logo"
+                    alt=""
+                />
+                
+                <Navbar.Brand className="justify-content-end px-3">
                 <Link to={""} className="navbar-brand text-white">
                     AucDais
                 </Link>
-                {/*<Navbar.Brand href="#home">AucDais</Navbar.Brand>*/}
-                <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto ">
-                        <Link to={"addAuction"} className={"nav-link text-white"}>Add Auction</Link>
-                        <Link to={"liveAuctions"} className={"nav-link text-white"}>Live Auctions</Link>
-                        <Link to={"savedAuctions"} className={"nav-link text-white"}>Saved Auctions</Link>
-                        <Link to={"history"} className={"nav-link text-white"}>History</Link>
-                        {/*<Link to={"location"} className={"nav-link text-white"}>Location</Link>*/}
-                        <Form className="d-flex">
+                </Navbar.Brand>
+
+                <Navbar.Collapse className="d-flex justify-content-center">
+                     <Form className="d-flex">
                             <Form.Control
                                 type="search"
                                 placeholder="Enter Keyword"
-                                className="me-2"
+                                className="mx-2 p-2"
                                 aria-label="Search"
                                 id="search_keyword"
                                 name="search_keyword"
                             />
-                            <div className="d-grid gap-2 col-6 mx-auto bg-danger text-white ">
+                            <div className="d-grid gap-2 mx-auto bg-danger text-white ">
                                 <Button type="submit" className="btn btn-danger"
                                         onClick={onSubmit}> Search</Button>
                             </div>
                         </Form>
+                </Navbar.Collapse>
 
 
-                    </Nav>
                     {!useauth.isLogin() && (
-                            <Nav className="ml-auto">
+                            <Nav className="d-flex justify-content-end mx-3">
                                 <Link to={"login"} className={"nav-link text-white"}>Log In</Link>
                                 <Link to={"signup"} className={"nav-link text-white"}>Sign Up</Link>
                             </Nav>
@@ -80,14 +82,36 @@ function NavBar() {
                     }
 
                     {useauth.isLogin() && (
-                            <Nav className="ml-auto">
-                                <Link to={""} className={"nav-link text-white"} onClick={handleLogout}>Logout</Link>
+                            <Nav className="d-flex justify-content-center px-4" pullRight>
+                                <NavDropdown title={
+                                    <span className='text-white'>
+                                        {useauth.getName()}
+                                        <Image className="thumbnail-image"
+                                            src={useauth.getImage()?useauth.getImage():"https://raw.githubusercontent.com/PhenoApps/Field-Book/master/.github/blank-profile.png?s=100"}
+                                            roundedCircle
+                                            alt="user pic"
+                                            style={{ width: '30px', height: '25px', margin:'2px 0px 0px 10px'}}
+                                        />
+                                    </span>
+                                }
+                                id="basic-nav-dropdown"
+                                className="drop-down-menu">
+
+                                    <NavDropdown.Item className="nav-item">
+                                        <Link to={"profile"} className="nav-link text-dark">Profile</Link>
+                                    </NavDropdown.Item>
+
+                                    <NavDropdown.Item className="nav-item">
+                                        <Link to={"settings"} className='nav-link text-dark'>Settings</Link>
+                                    </NavDropdown.Item>
+
+                                    <NavDropdown.Item className="nav-item">
+                                        <Link to={""} className='nav-link text-dark' onClick={handleLogout}>Logout</Link>
+                                    </NavDropdown.Item>
+                                </NavDropdown>
                             </Nav>
                         )
                     }
-
-                </Navbar.Collapse>
-            </Container>
         </Navbar>
     )
 

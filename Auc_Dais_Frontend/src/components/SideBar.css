@@ -1,0 +1,33 @@
+.sidenav{ 
+    height: 100%;
+    width: 15%;   
+    position: fixed; 
+    top: 50px; 
+    left: 0; 
+    background-color:rgb(172, 47, 47); 
+    transition: .5s ease; 
+    overflow-x: hidden; 
+    padding-top: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: left;
+    float: left;
+}
+.sidebar-container{
+    padding-top: 10px;
+    padding-bottom: 0;
+    padding-left: 0%;
+    padding-right: 20px;
+    height: 100%;
+
+}
+.sidepane{
+    display:flex;
+    flex-direction: column;
+}
+.left-padding-for-logo{
+    padding-left: 1%;
+}
+.left-padding-for-nav-container{
+    padding-left: 50px;
+}

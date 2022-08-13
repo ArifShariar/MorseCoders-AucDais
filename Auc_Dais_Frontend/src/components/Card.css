@@ -1,23 +1,23 @@
 .card-container{
     background-color: #FEF9A7;
-    padding-top: 100px;
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-top: 10%;
+    padding-left: 1%;
+    padding-right: 1%;
     padding-bottom: 20px;
     flex-direction: column;
-    align-self: left;
+    align-self: right;
 }
 .card-body-container{
     justify-content: flex-end;
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-left: 10%;
+    padding-right: 10%;
     padding-top: 50px;
     padding-bottom: 20px;
 }
 .card-image-container{
     padding-top: 10px;
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-left: 10%;
+    padding-right: 10%;
     padding-bottom: 20px;
     display: flex;
     flex-direction: row;
@@ -30,6 +30,13 @@
     width:"200" ;
     height:"250";
     overflow: hidden;
+}
+.image-desc-container{
+    justify-content: flex-end;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 1%;
+    padding-bottom: 20px;
 }
 .card-header{
     background-color: #FF9F45;
@@ -57,3 +64,50 @@
     padding-top: 10px;
     flex-direction: row; 
 } 
+
+.message-container{
+
+    padding-top: 2%;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-bottom: 0.2%;
+    flex-direction: column;
+    align-self: right;
+}
+.home-element-padding{
+    padding-top: 0%;
+    padding-left: 20%;
+    padding-right: 2%;
+    padding-bottom: 0.2%;
+}
+.input-container{
+    padding-bottom: 10%;
+}
+.profile-tile{
+    padding-top: 10%;
+}
+.payment-method{
+    padding-top: 5%;
+}
+a.link {
+    color:green;
+    background-color :green, 
+};
+
+a.visited {
+    color: pink;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a.hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+a:active {
+    color: brown;
+    background-color: transparent;
+    text-decoration: underline;
+}

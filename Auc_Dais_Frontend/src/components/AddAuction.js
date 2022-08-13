@@ -4,6 +4,8 @@ import AddAuctionDateTime from "./AddAuctionDateTime";
 import AddAuctionPhotos from "./AddAuctionPhotos";
 import AddAuctionConfirm from "./AddAuctionConfirm";
 import AddAuctionSuccess from "./AddAuctionSuccess";
+import Container from 'react-bootstrap/Container';
+import "./Card.css"
 
 class AddAuction extends React.Component{
     state = {
@@ -49,43 +51,52 @@ class AddAuction extends React.Component{
         switch(step) {
             case 1:
                 return (
-                    <AddAuctionDetails
-                    nextStep={this.nextStep}
-                    handleChange={this.handleChange}
-                    values={values}
-                    />
-                );
-            case 2:
-                return (
-                    <AddAuctionDateTime
+                    <Container className="home-element-padding">
+                        <AddAuctionDetails                       
                         nextStep={this.nextStep}
-                        prevStep={this.prevStep}
                         handleChange={this.handleChange}
                         values={values}
                     />
-
+                    </Container>
+                );
+            case 2:
+                return (
+                    <Container className="home-element-padding">  
+                        <AddAuctionDateTime
+                            nextStep={this.nextStep}
+                            prevStep={this.prevStep}
+                            handleChange={this.handleChange}
+                            values={values}
+                        />
+                    </Container>
                 );
 
             case 3:
                 return (
-                    <AddAuctionPhotos
-                        nextStep={this.nextStep}
-                        prevStep={this.prevStep}
-                        handleChange={this.handleChange}
-                        values={values}
-                    />
+                    <Container className="home-element-padding">
+                        <AddAuctionPhotos
+                            nextStep={this.nextStep}
+                            prevStep={this.prevStep}
+                            handleChange={this.handleChange}
+                            values={values}
+                        />
+                    </Container>
                 );
             case 4:
                 return (
-                    <AddAuctionConfirm
-                        nextStep={this.nextStep}
-                        prevStep={this.prevStep}
-                        values={values}
-                    />
+                    <Container className="home-element-padding">
+                        <AddAuctionConfirm
+                            nextStep={this.nextStep}
+                            prevStep={this.prevStep}
+                            values={values}
+                        />
+                    </Container>
                 );
             case 5:
                 return (
-                    <AddAuctionSuccess/>
+                    <Container className="home-element-padding">
+                        <AddAuctionSuccess/>
+                    </Container>
                 );
             default:
                 break;

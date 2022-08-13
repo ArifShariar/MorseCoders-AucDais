@@ -40,7 +40,8 @@ function SignUp() {
             phoneNumber: phone, 
             address: addr,
             password: pwd,
-            dateOfBirth: dob
+            dateOfBirth: dob,
+            image: ''
         }
 
         if (pwd !== cpwd) {
@@ -51,7 +52,7 @@ function SignUp() {
         axios.post('http://localhost:8080/users/signup', newUser).then(
             response => {
                 if(response.data != null) {
-                    if(response.status == 200) {
+                    if(response.status === 200) {
                         setFirstName('');
                         setLastName('');
                         setEmail('');
@@ -60,6 +61,7 @@ function SignUp() {
                         setPassword('');
                         setConPassword('');
                         setDob('');
+                        useauth.setImage('');
                         // useauth.login(response.data.token);
                         
                         navigate('/login', {
@@ -78,7 +80,7 @@ function SignUp() {
             if (error.response.status >= 500) {
                 alert("Server Error: Failed to create user, please try with different credentials");
             }
-            else if (error.response.status == 400) {
+            else if (error.response.status === 400) {
                 notify("Email already taken");
             }
 	    });
@@ -105,6 +107,7 @@ function SignUp() {
     }
 
     return(
+        <div className="home-element-padding">
         <div className="card-container">
             <div className='container-fluid' >
                 <div className="row">
@@ -175,7 +178,7 @@ function SignUp() {
                 </div>
             </div>
             <ToastContainer/>
-        </div>
+        </div> </div>
     );
 }
 

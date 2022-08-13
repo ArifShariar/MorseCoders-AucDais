@@ -6,55 +6,38 @@ import InputGroup from "react-bootstrap/InputGroup";
 import axios from "axios";
 import {clear} from "@testing-library/user-event/dist/clear";
 import {toast} from "react-toastify";
+import {useLocation} from "react-router-dom";
 
 
 function Message (){
+    const{state} = useLocation();
 
-    let sender_id = 1;
-    let receiver_id = 2;
+    let sender_id = localStorage.getItem('user_id');
+
+    let receiver_id = state.other;
+
+    const [message, setMessage] = useState([]);
 
     const fetchSentMessages = () => {
-        let url = "http://localhost:8080/message/get/sender/" + sender_id +"/receiver/" + receiver_id;
-        let url2 = "http://localhost:8080/message/get/sender/" + receiver_id +"/receiver/" + sender_id;
+        let url = "http://localhost:8080/message/get/sender/" + sender_id +"/receiver/" + receiver_id + "/sorted";
 
-        axios({
-            method: 'get',
-            url: url,
-            headers: {},
-            data: {}
+        axios.get(url).then(r => {
+            setMessage(r.data);
+            console.log(r.data);
+        }).catch(e => {
+            notify_error("Error fetching messages");
         })
-            .then(response => response.data)
-            .then(data => {
-                console.log("sent messages: ");
-                console.log(data);
-            })
-            .catch(error => {
-                console.log(error);
-                notify_error("Failed to load sent message");
-            });
-
-        axios({
-            method: 'get',
-            url: url2,
-            headers: {},
-            data: {}
-        })
-            .then(response => response.data)
-            .then(data => {
-                console.log("Received messages: ");
-                console.log(data);
-            })
-            .catch(error => {
-                console.log(error);
-                notify_error("Failed to load receive message");
-            });
 
     }
 
     useEffect( () =>{
         fetchSentMessages();
-
-    });
+        //mark_all_read/sender/{senderId}/receiver/{receiverId}
+        let url = "http://localhost:8080/message/mark_all_read/sender/" + sender_id +"/receiver/" + receiver_id;
+        axios.put(url).then(r => {
+            console.log(r);
+        });
+    } );
 
     const padding_top ={
         paddingTop: '10px'
@@ -81,8 +64,6 @@ function Message (){
 
     const sendMessage = () => {
         let message = document.getElementById("message").value;
-        let sender_id = 1;
-        let receiver_id = 2;
         let url = "http://localhost:8080/message/send/sender/" + sender_id + "/receiver/" + receiver_id;
 
         // check if message is empty
@@ -99,15 +80,18 @@ function Message (){
                 }
             }).then(response => {
                 if (response.data!=null){
-                    if (response.status === 200){
-                        alert("Message sent");
-                    }
+                    // if (response.status === 200){
+                    //     notify_success("Message sent");
+                    //     fetchSentMessages();
+                    //     clearMessage();
+                    // }
                     clear(document.getElementById("message"));
-                }
+                } 
             }).catch(error => {
                 console.log(error);
                 notify_error("Failed to send message");
             });
+
 
         }
 
@@ -116,35 +100,47 @@ function Message (){
 
 
     return (
-        <div className={"card-container"}>
-            <div className={"container-fluid"}>
-                <Card className="bg-warning.bg-gradient" >
-                    <Card.Header className={"bg-warning text-white text-center"}>Message</Card.Header>
-                    <Card.Body>
-                        <ListGroup>
-                            <ListGroup.Item variant="warning" style={padding_top_bottom_between_text}>Message from sender</ListGroup.Item>
-                            <ListGroup.Item variant="info" style={padding_top_bottom_between_text}>Message from receiver</ListGroup.Item>
-                        </ListGroup>
+        <div className="home-element-padding">
+            <div className="card-container">
+                <Card className={"bg-warning.bg-gradient"}>
+                    <Card.Header className={"bg-warning text-white text-center"}> Send Message</Card.Header>
+                        <div className='message-container'>
+                            {message.length === 0 ? <div>No messages</div> :
 
+                                message.map((message, index) => {
+                                    return(
 
-                        <div style={padding_top}>
-                            <InputGroup className="mb-3" size="lg">
-                                <Form.Control
-                                    placeholder="Type Message..."
-                                    aria-label="Type Message..."
-                                    aria-describedby="basic-addon2"
-                                    id = "message"
-                                />
-                                <Button type={"submit"} variant="primary" onClick={sendMessage}>Send</Button>
-                            </InputGroup>
+                                        <ListGroup>
+                                            {message.sender.id === receiver_id ?
+                                                <ListGroup.Item variant="warning w-50 align-self-start rounded-pill shadow text-padding"
+                                                                style={padding_top_bottom_between_text}>{message.message}
+                                                </ListGroup.Item> :
+
+                                                <ListGroup.Item key="{index}"
+                                                    variant="info w-50 align-self-end rounded-pill d-flex justify-content-end shadow text-padding"
+                                                    style={padding_top_bottom_between_text}>{message.message}
+                                                </ListGroup.Item>
+                                            }
+                                        </ListGroup>
+                                    );
+                                })
+                            }
+
+                            <div style={padding_top}>
+                                <InputGroup className="mb-3" size="lg">
+                                    <Form.Control
+                                        placeholder="Type Message..."
+                                        aria-label="Type Message..."
+                                        aria-describedby="basic-addon2"
+                                        id = "message"
+                                    />
+                                    <Button type={"submit"} variant="primary" onClick={sendMessage}>Send</Button>
+                                </InputGroup>
+                            </div>
                         </div>
 
-                    </Card.Body>
-
                 </Card>
-
-            </div>
-
+            </div> 
         </div>
     );
 }

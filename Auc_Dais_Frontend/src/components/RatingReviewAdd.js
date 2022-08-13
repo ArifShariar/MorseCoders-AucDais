@@ -1,64 +1,60 @@
-import React from "react";
+import React from 'react'
+import "./RatingReview.css"
+import { FaStar } from "react-icons/fa";
+import { useState } from "react"; 
 
-class RatingReviewAdd extends React.Component{
-    render(){
+const colors = {
+  orange: "#FFBA5A",
+  grey: "#a9a9a9"
+  
+};
 
-        const StarRating = () => {
-            const [rating, setRating] = useState(0);
-            return (
-              <div className="star-rating">
-                {[...Array(5)].map((star, index) => {
-                  index += 1;
-                  return (
-                    <button
-                      type="button"
-                      key={index}
-                      className={index <= rating ? "on" : "off"}
-                      onClick={() => setRating(index)}
-                    >
-                      <span className="star">&#9733;</span>
-                    </button>
-                  );
-                })}
-              </div>
-            );
-          };
-        return(
-            <div className="card-container">
-                <div className='container-fluid' >
-                    <div className="row">
-                        <div className=" col-sm-12">
-                        <Card className=" bg-warning.bg-gradient">
-                            <Card.Header className={"bg-warning text-white text-center"}> Saved Auctions </Card.Header>
-                             <Card.Body> 
-                                <div>
-                                    <h1 className={"text-center"}>Leave Us a Review</h1>
-                                </div>
-                                <div>
-                                    <h3>
-                                        Rate Us
-                                        const [rating, setRating] = useState(0);
-                                        <div className="star-rating">
-                                            {[...Array(5)].map((star, index) => {
-                                            index += 1;
-                                            <button
-                                                type="button"
-                                                key={index}
-                                                className={index <= rating ? "on" : "off"}
-                                                onClick={() => setRating(index)}
-                                                >
-                                                <span className="star">&#9733;</span>
-                                            </button>
-                                            })}
-                                        </div>
-                                    </h3>
-                                </div>
-                            </Card.Body> 
-                        </Card>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+function RatingReviewAdd() {
+  const [currentValue, setCurrentValue] = useState(0);
+  const [hoverValue, setHoverValue] = useState(undefined);
+  const stars = Array(5).fill(0)
+
+  const handleClick = value => {
+    setCurrentValue(value)
+  }
+
+  const handleMouseOver = newHoverValue => {
+    setHoverValue(newHoverValue)
+  };
+
+  const handleMouseLeave = () => {
+    setHoverValue(undefined)
+  }
+  return (
+    <div className='container justify-content-center'>
+      <h2 className='text-center'>Rate the Product </h2>
+      <div className='stars rating-body-container d-flex justify-content-center'>
+        {stars.map((_, index) => {
+          return ( 
+              <FaStar
+                key={index}
+                size={24}
+                onClick={() => handleClick(index + 1)}
+                onMouseOver={() => handleMouseOver(index + 1)}
+                onMouseLeave={handleMouseLeave}
+                color={(hoverValue || currentValue) > index ? colors.orange : colors.grey}
+                style={{
+                  marginRight: 10,
+                  cursor: "pointer",
+                }} 
+              /> 
+          )
+        })}
+      </div>
+      <div class="form-group"> 
+        <textarea class="form-control textarea" id="textarea1" rows="3" placeholder="What's your experience?"></textarea>
+        <div className="d-grid gap-2 col-6 mx-auto text-container">
+            <button type="submit" className="btn btn-success" >Submit</button>
+        </div>
+      </div> 
+      
+    </div>
+  ); 
 }
+
+export default RatingReviewAdd

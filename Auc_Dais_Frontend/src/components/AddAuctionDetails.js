@@ -35,7 +35,7 @@ class AddAuctionDetails extends React.Component{
             <Card className=" bg-warning.bg-gradient">
                 <Card.Header className={" bg-warning text-white text-center"}>Add Auction Details</Card.Header>
                 <Card.Body className="card-body-container">
-                    <form>
+                    <form encType={"multipart/form-data"}>
                         <div className="form-group">
                             <label htmlFor="product_name">Product Name*</label>
                             <input type="text" className="form-control" id="product_name" aria-describedby="product_name"
