@@ -17,9 +17,12 @@ public class AuctionProductController {
     private final AuctionProductService auctionProductService;
     private final UsersService usersService;
 
+
+
     public AuctionProductController(AuctionProductService auctionProductService, UsersService usersService) {
         this.auctionProductService = auctionProductService;
         this.usersService = usersService;
+
     }
 
     /*
@@ -30,6 +33,10 @@ public class AuctionProductController {
     public List<AuctionProducts> getAllAuctionProducts() {
         return auctionProductService.getAllAuctionProducts();
     }
+
+
+    @GetMapping("/all/ongoing/user/{user_id}")
+    public List<AuctionProducts> getAllOnGoingAuctions(@PathVariable("user_id") String user_id){ return auctionProductService.getAllOnGoingAuctions(Long.parseLong(user_id));}
 
     /*
     * Get all AuctionProducts of a specific user
@@ -59,7 +66,7 @@ public class AuctionProductController {
     * Create an auction product
     * @return void
      */
-    @PostMapping("/create")
+    @PostMapping(value = "/create")
     public void createAuctionProduct(@RequestParam String ownerId, @RequestParam String product_name, @RequestParam String product_description,
                                      @RequestParam String tags, @RequestParam String auction_start_date, @RequestParam String auction_end_date,
                                      @RequestParam String minimum_price, @RequestParam String photos, @RequestParam String address) {
@@ -77,11 +84,14 @@ public class AuctionProductController {
         auctionProduct.setTags(tags);
         auctionProduct.setMinimum_price(Double.parseDouble(minimum_price));
         auctionProduct.setPhotos(photos);
+
         auctionProduct.setAddress(address);
         auctionProduct.setOnline(false);
         auctionProduct.setApproved(false);
         auctionProduct.setOngoing(false);
         auctionProduct.setSold(false);
+        auctionProduct.setSentFailEmail(false);
+
 
         // convert auction_start_date and auction_end_date to Date
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -96,10 +106,6 @@ public class AuctionProductController {
         auctionProduct.setAuction_end_date(endDate);
 
         auctionProductService.createAuctionProduct(auctionProduct);
-
-
-
-
     }
 
     @PutMapping("/update/max_bid/{auction_id}")
@@ -119,7 +125,7 @@ public class AuctionProductController {
     public void updateAuctionProduct(@PathVariable String id, @RequestParam(required = false) String product_name, @RequestParam(required = false) Boolean isOnline,
                                      @RequestParam (required = false) String product_description, @RequestParam(required = false) String tags, @RequestParam(required = false) Double minimum_price,
                                      @RequestParam(required = false) Double max_bid, @RequestParam(required = false) String photos, @RequestParam(required = false) String auction_start_date,
-                                     @RequestParam(required = false) String auction_end_date, @RequestParam(required = false) String address) {
+                                     @RequestParam(required = false) String auction_end_date, @RequestParam(required = false) String address, @RequestParam(required = false) Boolean failEmail) {
 
         AuctionProducts auctionProduct = auctionProductService.getAuctionProductById(Long.parseLong(id));
 
@@ -146,6 +152,10 @@ public class AuctionProductController {
             }
             if (photos!=null){
                 auctionProduct.setPhotos(photos);
+            }
+
+            if(failEmail!=null){
+                auctionProduct.setSentFailEmail(failEmail);
             }
 
 
