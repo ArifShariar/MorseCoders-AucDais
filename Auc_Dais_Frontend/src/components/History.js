@@ -1,46 +1,37 @@
-import React from "react";
-import {Table, Card, Button} from "react-bootstrap";
-import './Card.css'
+import React, {useEffect, useState} from 'react';
+import {Button, Card, Table} from "react-bootstrap";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {toast} from "react-toastify";
 
-class History extends React.Component{
+function History(){
+    let user_id = localStorage.getItem('user_id');
+    let user_token = localStorage.getItem('user');
+    const[auctions, setAuctions] = useState([]);
+    const navigate = useNavigate();
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            history : [],
-            // get user_id from local storage
-            user_id : localStorage.getItem('user_id'),
-            user_token: localStorage.getItem('user')
-        }
+
+    const fetchHistory = () => {
+        let url = "http://localhost:8080/history/get/user/" + user_id + "/" + user_token;
+        axios.get(url).then(r => {
+            setAuctions(r.data);
+        }).catch(e => {
+            toast.error("Error fetching history");
+        });
     }
 
 
-    componentDidMount() {
-        let url = "http://localhost:8080/history/get/user/" + this.state.user_id + "/" + this.state.user_token;
-        axios({
-            method: 'get',
-            url: url,
-            headers: {},
-            data: {
-                token: this.state.user_token
-            }
-        })
-            .then(response => response.data)
-            .then(data => {
-                this.state.history = data;
-                this.setState(this.state.history);
-            })
-            .catch(error => {
-                console.log(error);
-            });
+    useEffect(() => {
+        fetchHistory();
+    },[]);
 
+
+    const viewAuction = (id) => {
+        navigate("/auction/" + id, {state: {auctionId: id}});
     }
 
-    render() {
-        return (
-            <div className="home-element-padding"> 
+    return(
+        <div className="home-element-padding">
             <div className="card-container">
                 <div className='container-fluid' >
                     <div className="row">
@@ -62,11 +53,11 @@ class History extends React.Component{
                                         </thead>
                                         <tbody>
 
-                                        {this.state.history.length === 0 ?
+                                        {auctions.length === 0 ?
                                             <tr>
                                                 <td colSpan={7} className={"text-center"}>No history</td>
                                             </tr> :
-                                            this.state.history.map((history, index) => {
+                                            auctions.map((history, index) => {
                                                     return (
                                                         <tr key={history.id}>
                                                             <td>{index + 1}</td>
@@ -76,7 +67,7 @@ class History extends React.Component{
                                                             <td className={"text-center"}>{history.bid_amount}</td>
                                                             <td className={"text-center"}>{history.date}</td>
                                                             <td className={"text-center"}>
-                                                                <Link to={'/auction/' + history.auctionProduct.id} className={"btn btn-primary"}>View</Link>
+                                                                <Button variant={'primary'} onClick={()=>viewAuction(history.auctionProduct.id)}>View</Button>
                                                             </td>
                                                         </tr>
                                                     )
@@ -90,9 +81,8 @@ class History extends React.Component{
                         </div>
                     </div>
                 </div>
-            </div></div>
-        );
-    }
+            </div>
+        </div>
+    );
 }
-
 export default History;

@@ -1,4 +1,4 @@
-import React, { Component,useState } from 'react'
+import React, {Component, useEffect, useState} from 'react'
 import {BsFillCreditCard2FrontFill,BsPaypal} from "react-icons/bs";
 import {Card} from "react-bootstrap";
 // import {FaGooglePay} from "react-icons/fa"
@@ -6,6 +6,7 @@ import {Card} from "react-bootstrap";
 import PaymentWithCard from './PaymentWithCard';
 import PaymentWithPayPal from './PaymentWithPayPal'; 
 import PaymentWithBkash from './PaymentWithBkash';
+import {useLocation} from "react-router-dom";
 
 
 
@@ -53,6 +54,11 @@ function Payment(){
     const [useCard, setCard] = useState (false)
     const [usePaypal,setPaypal] = useState(false) 
     const [useBkash,setBkash] = useState(false)
+    const {state} = useLocation();
+
+    let auction_id = state.won_auction_id;
+
+    localStorage.setItem('won_auction_id', auction_id);
 
     const handleCardClick =() => {
         setCard (true) 
@@ -69,6 +75,10 @@ function Payment(){
         setPaypal(false);
         setBkash(true)
     }
+
+    useEffect(() => {
+        handleCardClick();
+    }, []);
 
     return (
         <div className="home-element-padding">

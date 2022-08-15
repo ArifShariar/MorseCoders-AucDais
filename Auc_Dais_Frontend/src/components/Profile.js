@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Card, Col, Row} from "react-bootstrap";
 import Container from "react-bootstrap/Container";
-import {BsFillBellFill} from "react-icons/bs";
 import "./Card.css"
 import axios from "axios";
 import {useAuth} from "./context/AuthProvider";
@@ -47,7 +46,7 @@ function Profile () {
 
         await axios.post('http://localhost:8080/files', imageData).then( response => {
             if(response.data != null) {
-                if(response.status == 200) {
+                if(response.status === 200) {
                     imageDir = response.data.fileDownloadUri;
                     console.log("Working");
                 }
@@ -114,7 +113,7 @@ function Profile () {
                                             src={useauth.getImage()?useauth.getImage():"https://raw.githubusercontent.com/PhenoApps/Field-Book/master/.github/blank-profile.png?s=100"}
                                             alt="online-auctions photo"
                                             height={'100%'}
-                                            width={'25%'} 
+                                            width={'25%'}
                                         />
                                         <div className="text-container">
                                             <p className="profile-tile"> 

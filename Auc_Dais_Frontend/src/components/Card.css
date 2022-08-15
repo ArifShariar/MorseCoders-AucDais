@@ -73,6 +73,7 @@
     padding-bottom: 0.2%;
     flex-direction: column;
     align-self: right;
+    height: 400px;
 }
 .home-element-padding{
     padding-top: 0%;

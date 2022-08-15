@@ -16,16 +16,33 @@ function NavBar() {
     const onSubmit = (e) => {
         e.preventDefault();
         let search_keyword = document.getElementById("search_keyword").value;
-        axios.get("http://localhost:8080/auction_products/search/" + search_keyword)
-            .then(response => response.data)
-            .then(data => {
-                searchResult = data;
-                navigate("/search", {state: {searchResult: searchResult}});
 
-            })
-            .catch(error => {
-                console.log(error);
-            })
+
+        if (localStorage.getItem('user_id') === null) {
+            axios.get("http://localhost:8080/auction_products/search/" + search_keyword)
+                .then(response => response.data)
+                .then(data => {
+                    searchResult = data;
+                    navigate("/search", {state: {searchResult: searchResult}});
+
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+
+        else {
+            axios.get("http://localhost:8080/auction_products/search/" + search_keyword + "/" + localStorage.getItem('user_id'))
+                .then(response => response.data)
+                .then(data => {
+                    searchResult = data;
+                    navigate("/search", {state: {searchResult: searchResult}});
+
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
 
     }
 

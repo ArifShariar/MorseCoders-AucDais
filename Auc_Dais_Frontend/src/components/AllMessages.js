@@ -19,7 +19,6 @@ function AllMessages() {
 
         axios.get(url).then(r => {
             setMessage(r.data);
-            console.log(r.data);
         }).catch(e => {
             notify_error("Error fetching messages");
         });
@@ -37,7 +36,7 @@ function AllMessages() {
 
     useEffect(() => {
         fetchMessages();
-    },[]);
+    });
 
     const notify_error = (error_message) =>{
         toast.error(error_message,
@@ -61,7 +60,7 @@ function AllMessages() {
                     { message.length === 0 ? <div className="text-center">No messages</div> :
                         message.map(message => {
                             return (
-                                <ListGroup id={message.id}>
+                                <ListGroup key={message.id}>
                                     <ListGroup.Item onClick={()=> showMessage(message.receiver.id, message.sender.id)}
                                                     className="d-flex justify-content-between align-items-start">
 

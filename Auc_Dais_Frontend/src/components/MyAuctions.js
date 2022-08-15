@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import {toast} from "react-toastify";
 import {Button} from "react-bootstrap";
 
-function WonAuctions (){
+function MyAuctions(){
 
     let user_id = localStorage.getItem('user_id');
 
@@ -17,7 +17,7 @@ function WonAuctions (){
 
 
     const fetchWonAuctions = () => {
-        let url = "http://localhost:8080/won_auctions/all/" + user_id;
+        let url = "http://localhost:8080/auction_products/all/" + user_id;
 
         axios.get(url).then(r => {
             setAuctions(r.data);
@@ -27,13 +27,13 @@ function WonAuctions (){
 
     }
 
-    const payment = (id) => {
-        navigate('payment', {state: {won_auction_id: id}});
 
+    const view = (auction_id) => {
+        navigate("/myAuctions/myAuction/" + auction_id, {state: {auctionId: auction_id}});
     }
 
-    const viewAndBid = (auction_id) => {
-        navigate("/wonAuctions/auction/" + auction_id, {state: {auctionId: auction_id}});
+    const update = (auction_id) => {
+        navigate("/update/" + auction_id, {state: {auctionId: auction_id}});
     }
 
     useEffect(() => {
@@ -47,25 +47,25 @@ function WonAuctions (){
                     <div className="row">
                         <div className=" col-sm-12">
                             <Card className=" bg-warning.bg-gradient">
-                                <Card.Header className={"bg-warning text-white text-center"}> Won Auctions </Card.Header>
-                                {auctions.length === 0 ? <Card.Body className={"text-center"}> No Won auctions </Card.Body> :
+                                <Card.Header className={"bg-warning text-white text-center"}> My Auctions </Card.Header>
+                                {auctions.length === 0 ? <Card.Body className={"text-center"}> No Auctions </Card.Body> :
                                     auctions.map(auction => {
                                         return(
                                             <Card.Body key={auction.id}>
                                                 <div className='card-image-container border border-warning'>
                                                     <img
-                                                        src={auction.auctionProduct.photos}
+                                                        src={auction.photos}
                                                         alt="product image"
                                                         height={200}
                                                         width={200}
                                                     />
                                                     <div className="image-desc-container">
-                                                        <p>Product name : {auction.auctionProduct.product_name}</p>
-                                                        <p>Max Bid: {auction.auctionProduct.max_bid}</p>
-                                                        <p>Start Date: {auction.auctionProduct.auction_start_date}</p>
-                                                        <p>End Date: {auction.auctionProduct.auction_end_date}</p>
-                                                        <Button variant="secondary" onClick={()=>viewAndBid(auction.auctionProduct.id)} id={"view"}>View</Button>{' '}
-                                                        <Button variant="info" onClick={()=>payment(auction.id)} id={"payment"}>Proceed to Pay</Button>{' '}
+                                                        <p>Product name : {auction.product_name}</p>
+                                                        <p>Max Bid: {auction.max_bid}</p>
+                                                        <p>Start Date: {auction.auction_start_date}</p>
+                                                        <p>End Date: {auction.auction_end_date}</p>
+                                                        <Button variant="secondary" onClick={()=>view(auction.id)} id={"view"}>View</Button>{' '}
+                                                        <Button variant="info" onClick={()=>update(auction.id)} id={"payment"}>Update</Button>{' '}
 
                                                     </div>
                                                 </div>
@@ -83,4 +83,4 @@ function WonAuctions (){
     );
 }
 
-export default WonAuctions;
+export default MyAuctions;

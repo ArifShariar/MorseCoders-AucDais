@@ -74,9 +74,7 @@ class AddAuctionConfirm extends React.Component{
                                         <ListGroup.Item>Start Time: {start_time}</ListGroup.Item>
                                         <ListGroup.Item>End Date: {end_date}</ListGroup.Item>
                                         <ListGroup.Item>End Time: {end_time}</ListGroup.Item>
-                                        <ListGroup.Item>Auction Type: {auction_type}</ListGroup.Item>
                                         <ListGroup.Item>Address: {address}</ListGroup.Item>
-                                        <ListGroup.Item>Photos: {photos}</ListGroup.Item>
                                         <ListGroup.Item>Tags: {tags}</ListGroup.Item>
 
                                     </ListGroup>

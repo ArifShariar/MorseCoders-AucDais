@@ -117,9 +117,9 @@ const ChatRoom = () => {
         connect();
     }
     return (
-    <div className="container">
+    <div className="container ">
         {userData.connected?
-        <div className="chat-box">
+        <div className="chat-box ">
             <div className="member-list">
                 <ul>
                     <li onClick={()=>{setTab("CHATROOM")}} className={`member ${tab==="CHATROOM" && "active"}`}>Chatroom</li>
@@ -128,7 +128,7 @@ const ChatRoom = () => {
                     ))}
                 </ul>
             </div>
-            {tab==="CHATROOM" && <div className="chat-content">
+            {tab==="CHATROOM" && <div className="chat-content ">
                 <ul className="chat-messages">
                     {publicChats.map((chat,index)=>(
                         <li className={`message ${chat.senderName === userData.username && "self"}`} key={index}>

@@ -17,20 +17,36 @@ function Message (){
     let receiver_id = state.other;
 
     const [message, setMessage] = useState([]);
+    const [sender, setSender] = useState([]);
+    const [receiver, setReceiver] = useState([]);
+
+    const fetchSenderAndReceiver = () => {
+        let sender_url = "http://localhost:8080/users/get/" + sender_id;
+        let receiver_url = "http://localhost:8080/users/get/" + receiver_id;
+        axios.get(sender_url).then(r => {
+            setSender(r.data);
+        }).catch(e => {
+
+        });
+        axios.get(receiver_url).then(r => {
+            setReceiver(r.data);
+        }).catch(e => {
+        });
+    }
 
     const fetchSentMessages = () => {
         let url = "http://localhost:8080/message/get/sender/" + sender_id +"/receiver/" + receiver_id + "/sorted";
 
         axios.get(url).then(r => {
             setMessage(r.data);
-            console.log(r.data);
         }).catch(e => {
-            notify_error("Error fetching messages");
+            // notify_error("Error fetching messages");
         })
 
     }
 
     useEffect( () =>{
+        fetchSenderAndReceiver();
         fetchSentMessages();
         //mark_all_read/sender/{senderId}/receiver/{receiverId}
         let url = "http://localhost:8080/message/mark_all_read/sender/" + sender_id +"/receiver/" + receiver_id;
@@ -103,8 +119,8 @@ function Message (){
         <div className="home-element-padding">
             <div className="card-container">
                 <Card className={"bg-warning.bg-gradient"}>
-                    <Card.Header className={"bg-warning text-white text-center"}> Send Message</Card.Header>
-                        <div className='message-container'>
+                    <Card.Header className={"bg-warning text-white text-center"}> Send Message To {receiver.firstName+' ' + receiver.lastName}</Card.Header>
+                        <div className='message-container overflow-auto '>
                             {message.length === 0 ? <div>No messages</div> :
 
                                 message.map((message, index) => {
@@ -126,19 +142,21 @@ function Message (){
                                 })
                             }
 
-                            <div style={padding_top}>
-                                <InputGroup className="mb-3" size="lg">
-                                    <Form.Control
-                                        placeholder="Type Message..."
-                                        aria-label="Type Message..."
-                                        aria-describedby="basic-addon2"
-                                        id = "message"
-                                    />
-                                    <Button type={"submit"} variant="primary" onClick={sendMessage}>Send</Button>
-                                </InputGroup>
-                            </div>
-                        </div>
 
+                        </div>
+                </Card>
+                <Card className={'bg-warning.bg-gradient'}>
+                    <div style={padding_top}>
+                        <InputGroup className="mb-3" size="lg">
+                            <Form.Control
+                                placeholder="Type Message..."
+                                aria-label="Type Message..."
+                                aria-describedby="basic-addon2"
+                                id = "message"
+                            />
+                            <Button type={"submit"} variant="primary" onClick={sendMessage}>Send</Button>
+                        </InputGroup>
+                    </div>
                 </Card>
             </div> 
         </div>

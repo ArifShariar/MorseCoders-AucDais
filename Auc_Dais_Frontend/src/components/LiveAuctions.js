@@ -72,7 +72,7 @@ function LiveAuctions (){
                                         <Card.Body key={auction.id}>
                                             <div className='card-image-container border border-warning'>
                                                 <img
-                                                    src={require('../images/vase.jpeg')}
+                                                    src={auction.photos}
                                                     alt="product image"
                                                     height={200}
                                                     width={150}

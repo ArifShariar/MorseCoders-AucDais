@@ -22,7 +22,7 @@ function LiveAuction () {
         axios.get(url).then(r => {
             setChat(r.data);
         }).then(e => {
-            console.log("chat fetched");
+            // console.log("chat fetched");
         })
 
     }
@@ -32,7 +32,7 @@ function LiveAuction () {
         axios.get(url).then(r => {
             setLastBid(r.data);
         }).catch(e => {
-            toast.error("Error fetching last bid");
+            // toast.error("Error fetching last bid");
         })
     }
 
@@ -43,7 +43,7 @@ function LiveAuction () {
             setAuction(r.data);
             console.log(r.data);
         }).catch(e => {
-            toast.error("Error fetching auction");
+            // toast.error("Error fetching auction");
         });
 
     }
@@ -112,7 +112,7 @@ function LiveAuction () {
         fetchLiveAuction();
         fetchMessages();
         fetchMyLastBid();
-    },[]);
+    });
 
     const padding_top ={
         paddingTop: '10px'
@@ -222,8 +222,8 @@ function LiveAuction () {
                 <Card className=" bg-warning.bg-gradient">
                     <Card.Header className={"bg-warning text-white text-center"}> Chat Room </Card.Header>
                      <Card.Body>
-                        <div className=''>
-                            <div className='message-container'>
+                        <div>
+                            <div className='message-container overflow-auto '>
                                 {chat.length === 0 ? <div>No messages</div> :
 
                                     chat.map((chat, index) => {
@@ -248,20 +248,22 @@ function LiveAuction () {
                                     })
                                 }
 
-                                <div style={padding_top}>
-                                    <InputGroup className="mb-3" size="lg">
-                                        <Form.Control
-                                            placeholder="Type Message..."
-                                            aria-label="Type Message..."
-                                            aria-describedby="basic-addon2"
-                                            id = "message"
-                                        />
-                                        <Button type={"submit"} variant="primary" onClick={sendMessage}>Send</Button>
-                                    </InputGroup>
-                                </div>
                             </div>
                         </div>
                     </Card.Body>
+                </Card>
+                <Card className={'bg-warning.bg-gradient'}>
+                    <div style={padding_top}>
+                        <InputGroup className="mb-3" size="lg">
+                            <Form.Control
+                                placeholder="Type Message..."
+                                aria-label="Type Message..."
+                                aria-describedby="basic-addon2"
+                                id = "message"
+                            />
+                            <Button type={"submit"} variant="primary" onClick={sendMessage}>Send</Button>
+                        </InputGroup>
+                    </div>
                 </Card>
             </div>
         </div></div>
